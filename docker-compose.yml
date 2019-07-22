@@ -1,0 +1,28 @@
+version: "3"
+services:
+  db:
+    build: ./db
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: qwertyuiop0987654321
+      MYSQL_DATABASE: pbm
+  app:
+    build: ./
+    restart: always
+    ports:
+     - "80:3131"
+    depends_on:
+      - db
+    links:
+      - db:db 
+    environment:
+      - ENV=production
+      - PORT=3131
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=pbm
+      - DB_USER=root
+      - DB_PASS=qwertyuiop0987654321
